@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/mod_7"
+        android:layout_marginBottom="@dimen/mod_7_75"
+        android:orientation="vertical">
+
+        <!--suppress AndroidUnknownAttribute -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_current_temp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/colorTextSecondary"
+            android:textSize="@dimen/font_main"
+            tools:text="20º" />
+
+        <!--suppress AndroidUnknownAttribute -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_current_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:textColor="@color/colorCustomBlue"
+            android:textSize="@dimen/font_subline"
+            tools:text="Bangalore" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/mod_2">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/layout_bottomSheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:behavior_hideable="false"
+            app:behavior_peekHeight="@dimen/default_forcast_list_peek"
+            app:cardBackgroundColor="@color/colorBackgroundMain"
+            app:cardElevation="@dimen/default_elevation"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/forcast_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:paddingStart="@dimen/mod_2"
+                android:paddingEnd="@dimen/mod_2"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_layout" />
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

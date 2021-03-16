@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackgroundError"
+    android:padding="@dimen/mod_3">
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <!--suppress AndroidUnknownAttribute -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="@string/error_message"
+            android:textColor="@color/colorTextPrimary"
+            android:gravity="center"
+            android:textSize="@dimen/font_headline" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/mod_5_25"
+            android:background="@color/colorBackgroundButton"
+            android:text="@string/error_btn_retry"
+            android:textColor="@color/colorTextPrimary" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</FrameLayout>
