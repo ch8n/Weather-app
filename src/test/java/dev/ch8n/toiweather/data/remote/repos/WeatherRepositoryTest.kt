@@ -3,9 +3,6 @@ package dev.ch8n.toiweather.data.remote.repos
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.google.common.truth.Truth
-import dev.ch8n.toiweather.MainCoroutineRule
-import dev.ch8n.toiweather.data.remote.model.Current
-import dev.ch8n.toiweather.data.remote.model.Location
 import dev.ch8n.toiweather.data.remote.model.WeatherResponse
 import dev.ch8n.toiweather.data.remote.sources.WeatherSource
 import dev.ch8n.toiweather.utils.Result
@@ -29,10 +26,6 @@ class WeatherRepositoryTest {
     private lateinit var weatherSource: WeatherSource
 
     // Set the main coroutines dispatcher for unit testing.
-    @ExperimentalCoroutinesApi
-    @get:Rule
-    var mainCoroutineRule = MainCoroutineRule()
-
     lateinit var weatherRepository: WeatherRepository
 
     @Before

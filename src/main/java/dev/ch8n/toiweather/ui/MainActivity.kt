@@ -82,6 +82,11 @@ class MainActivity() : ViewBindingActivity<ActivityMainBinding>() {
                 viewModel.retryWeatherFetch()
             }
 
+            // testing purpose
+            mainView.textCurrentTemp.setOnClickListener {
+                viewModel.retryWeatherFetch()
+            }
+
         }
 
     }

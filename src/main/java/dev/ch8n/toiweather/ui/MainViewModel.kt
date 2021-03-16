@@ -30,6 +30,8 @@ class MainViewModel(private val weatherRepo: WeatherRepo) : ViewModel() {
     fun getCurrentWeather(location: String) {
         lastWeatherLocation = location
         viewModelScope.launch {
+            // just to make animations visible
+            delay(500)
             Result.build { weatherRepo.getRemoteCurrentWeather(location) }
                 .let {
                     _result.postValue(it)

@@ -1,17 +1,12 @@
 package dev.ch8n.toiweather.data.remote.sources
 
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.google.common.truth.Truth
-import dev.ch8n.toiweather.MainCoroutineRule
 import dev.ch8n.toiweather.data.remote.config.ApiManager
 import dev.ch8n.toiweather.di.modules.NetworkBinder
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
 @LargeTest
 class WeatherAPISourceTest {

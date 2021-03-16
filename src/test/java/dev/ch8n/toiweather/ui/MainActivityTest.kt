@@ -2,7 +2,6 @@ package dev.ch8n.toiweather.ui
 
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso
@@ -12,31 +11,23 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.google.common.truth.Truth
 import dev.ch8n.toiweather.TOIApp
-import dev.ch8n.toiweather.MainCoroutineRule
 import dev.ch8n.toiweather.R
 import dev.ch8n.toiweather.data.remote.model.WeatherResponse
 import dev.ch8n.toiweather.data.remote.sources.WeatherSource
 import dev.ch8n.toiweather.utils.Result
 import io.mockk.spyk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 
-@ExperimentalCoroutinesApi
+
 @RunWith(AndroidJUnit4::class)
 @MediumTest
 @Config(application = TOIApp::class)
 class MainActivityTest {
 
     private lateinit var weatherSource: WeatherSource
-
-    // Set the main coroutines dispatcher for unit testing.
-    @ExperimentalCoroutinesApi
-    @get:Rule
-    var mainCoroutineRule = MainCoroutineRule()
 
     lateinit var scenario: ActivityScenario<MainActivity>
 
@@ -53,17 +44,12 @@ class MainActivityTest {
         }
     }
 
-
-
-
     @Test
     fun `is loading Called and loader visible`() {
         scenario.moveToState(Lifecycle.State.RESUMED)
         scenario.onActivity { view ->
             val spyView = spyk<MainActivity>(view)
-            val result = Result.build { throw Exception("pokemon") }
-            spyView.viewModel.getResultTestOnly().value = result
-
+            spyView.viewModel.getResultTestOnly().value = Result.Loading
             Espresso.onView(ViewMatchers.withId(R.id.image_loading))
                 .check { view, noViewFoundException ->
                     Truth.assertThat(view.visibility == View.VISIBLE).isTrue()
