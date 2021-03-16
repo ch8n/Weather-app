@@ -13,25 +13,15 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@ExperimentalCoroutinesApi
-@RunWith(AndroidJUnit4::class)
 @LargeTest
-class WeatherSourceTest {
-
-
-    // Set the main coroutines dispatcher for unit testing.
-    @ExperimentalCoroutinesApi
-    @get:Rule
-    var mainCoroutineRule = MainCoroutineRule()
-
+class WeatherAPISourceTest {
 
     lateinit var weatherSource: WeatherSource
 
     @Before
     fun setup() {
-        val networkBinder = NetworkBinder()
-        val okhttp = networkBinder.provideOkHttpClient()
-        val retrofit = networkBinder.provideRetrofitClient(okhttp)
+        val okhttp = NetworkBinder.provideOkHttpClient()
+        val retrofit = NetworkBinder.provideRetrofitClient(okhttp)
         val apiManager = ApiManager(retrofit)
         weatherSource = WeatherSource(apiManager)
     }
@@ -40,7 +30,7 @@ class WeatherSourceTest {
     fun getWeather() {
         runBlocking {
             val result = weatherSource.getWeatherInfo("New Delhi")
-            Truth.assertThat(result.location.name.toLowerCase()).contains("delhi")
+            Truth.assertThat(result.location?.name?.toLowerCase()).contains("delhi")
         }
     }
 }

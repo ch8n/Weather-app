@@ -72,6 +72,7 @@ class MainActivity() : ViewBindingActivity<ActivityMainBinding>() {
                 forcastListAdapter = it
             }
 
+            // using bottom sheet for expanding behaviour
             bottomSheet = BottomSheetBehavior.from(mainView.layoutBottomSheet)
 
             // initial api call

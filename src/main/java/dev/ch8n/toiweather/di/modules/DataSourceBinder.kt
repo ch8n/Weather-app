@@ -26,6 +26,4 @@ object DataSourceBinder {
     fun provideWeatherRepository(weatherSource: WeatherSource): WeatherRepo =
         WeatherRepository(weatherSource)
 
-
-
 }

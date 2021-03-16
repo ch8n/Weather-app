@@ -31,7 +31,7 @@
     <!--default-->
     <dimen name="default_elevation">8dp</dimen>
     <dimen name="default_forcast_list_size">@dimen/mod_10</dimen>
-    <dimen name="default_forcast_list_peek">240dp</dimen>
+    <dimen name="default_forcast_list_peek">80dp</dimen>
 
 
 </resources>

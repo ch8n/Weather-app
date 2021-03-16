@@ -1,5 +1,6 @@
 package dev.ch8n.toiweather.ui
 
+import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
@@ -13,6 +14,7 @@ import com.google.common.truth.Truth
 import dev.ch8n.toiweather.TOIApp
 import dev.ch8n.toiweather.MainCoroutineRule
 import dev.ch8n.toiweather.R
+import dev.ch8n.toiweather.data.remote.model.WeatherResponse
 import dev.ch8n.toiweather.data.remote.sources.WeatherSource
 import dev.ch8n.toiweather.utils.Result
 import io.mockk.spyk
@@ -29,13 +31,12 @@ import org.robolectric.annotation.Config
 @Config(application = TOIApp::class)
 class MainActivityTest {
 
-
     private lateinit var weatherSource: WeatherSource
+
     // Set the main coroutines dispatcher for unit testing.
     @ExperimentalCoroutinesApi
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
-
 
     lateinit var scenario: ActivityScenario<MainActivity>
 
@@ -52,15 +53,17 @@ class MainActivityTest {
         }
     }
 
+
+
+
     @Test
     fun `is loading Called and loader visible`() {
         scenario.moveToState(Lifecycle.State.RESUMED)
         scenario.onActivity { view ->
             val spyView = spyk<MainActivity>(view)
-            spyView.onLoading(true, viewbinds)
             Espresso.onView(ViewMatchers.withId(R.id.image_loading))
                 .check { view, noViewFoundException ->
-                    Truth.assertThat(view.isVisible).isTrue()
+                    Truth.assertThat(view.visibility == View.VISIBLE).isTrue()
                 }
         }
     }
@@ -70,10 +73,9 @@ class MainActivityTest {
         scenario.moveToState(Lifecycle.State.RESUMED)
         scenario.onActivity { view ->
             val spyView = spyk<MainActivity>(view)
-            spyView.onError(true, viewBinds)
             Espresso.onView(ViewMatchers.withId(R.id.btn_retry))
                 .check { view, noViewFoundException ->
-                    Truth.assertThat(view.isVisible).isTrue()
+                    Truth.assertThat(view.visibility == View.VISIBLE).isTrue()
                 }
         }
     }
@@ -83,22 +85,19 @@ class MainActivityTest {
         scenario.moveToState(Lifecycle.State.RESUMED)
         scenario.onActivity { view ->
             val spyView = spyk<MainActivity>(view)
-            spyView.onError(true, viewBinds)
             Espresso.onView(ViewMatchers.withId(R.id.btn_retry))
                 .check { view1, _ ->
 
-                    Truth.assertThat(view1.isVisible).isTrue()
+                    Truth.assertThat(view1.visibility == View.VISIBLE).isTrue()
 
                     Espresso.onView(ViewMatchers.withId(R.id.btn_retry))
                         .perform(ViewActions.click())
 
                     Espresso.onView(ViewMatchers.withId(R.id.image_loading))
                         .check { view2, _ ->
-                            Truth.assertThat(view2.isVisible).isTrue()
+                            Truth.assertThat(view1.visibility == View.VISIBLE).isTrue()
                         }
-
                 }
-
 
         }
     }
@@ -107,22 +106,12 @@ class MainActivityTest {
     fun `on success result data updates on view`() {
         scenario.moveToState(Lifecycle.State.RESUMED)
         scenario.onActivity { view ->
-
-            val result = Result.build {
-                WeatherResponse(
-                    Current(
-                        30
-                    ), Location("india", "delhi")
-                )
-            }
-
-            view.onSuccessWeatherInfo(result as Result.Success<WeatherResponse>, viewBinds)
-
+            val spyView = spyk<MainActivity>(view)
+            val result = Result.build { WeatherResponse.fake() }
             Espresso.onView(ViewMatchers.withId(R.id.text_current_temp))
                 .check { view2, _ ->
-                    Truth.assertThat((view2 as AppCompatTextView).text.toString()).contains("30")
+                    Truth.assertThat((view2 as AppCompatTextView).text.toString()).contains("10")
                 }
-
             Espresso.onView(ViewMatchers.withId(R.id.text_current_city))
                 .check { view3, _ ->
                     Truth.assertThat((view3 as AppCompatTextView).text.toString()).contains("delhi")
