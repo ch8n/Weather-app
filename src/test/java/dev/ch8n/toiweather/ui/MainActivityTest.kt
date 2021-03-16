@@ -57,7 +57,7 @@ class MainActivityTest {
         scenario.moveToState(Lifecycle.State.RESUMED)
         scenario.onActivity { view ->
             val spyView = spyk<MainActivity>(view)
-            spyView.onLoading(true)
+            spyView.onLoading(true, viewbinds)
             Espresso.onView(ViewMatchers.withId(R.id.image_loading))
                 .check { view, noViewFoundException ->
                     Truth.assertThat(view.isVisible).isTrue()
@@ -70,7 +70,7 @@ class MainActivityTest {
         scenario.moveToState(Lifecycle.State.RESUMED)
         scenario.onActivity { view ->
             val spyView = spyk<MainActivity>(view)
-            spyView.onError(true)
+            spyView.onError(true, viewBinds)
             Espresso.onView(ViewMatchers.withId(R.id.btn_retry))
                 .check { view, noViewFoundException ->
                     Truth.assertThat(view.isVisible).isTrue()
@@ -83,7 +83,7 @@ class MainActivityTest {
         scenario.moveToState(Lifecycle.State.RESUMED)
         scenario.onActivity { view ->
             val spyView = spyk<MainActivity>(view)
-            spyView.onError(true)
+            spyView.onError(true, viewBinds)
             Espresso.onView(ViewMatchers.withId(R.id.btn_retry))
                 .check { view1, _ ->
 
@@ -116,7 +116,7 @@ class MainActivityTest {
                 )
             }
 
-            view.onSuccessWeatherInfo(result as Result.Success<WeatherResponse>)
+            view.onSuccessWeatherInfo(result as Result.Success<WeatherResponse>, viewBinds)
 
             Espresso.onView(ViewMatchers.withId(R.id.text_current_temp))
                 .check { view2, _ ->

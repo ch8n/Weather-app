@@ -2,113 +2,134 @@ package dev.ch8n.toiweather.ui
 
 import android.os.Handler
 import android.util.Log
+import android.view.LayoutInflater
 import androidx.cardview.widget.CardView
-import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dev.ch8n.toiweather.R
-import dev.ch8n.toiweather.base.BaseActivity
+import dev.ch8n.toiweather.base.ViewBindingActivity
+import dev.ch8n.toiweather.data.remote.model.WeatherResponse
+import dev.ch8n.toiweather.databinding.ActivityMainBinding
+import dev.ch8n.toiweather.databinding.LayoutErrorBinding
+import dev.ch8n.toiweather.databinding.LayoutLoadingBinding
+import dev.ch8n.toiweather.databinding.LayoutMainContentBinding
 import dev.ch8n.toiweather.ui.adapter.ForcastItem
 import dev.ch8n.toiweather.ui.adapter.ForcastListAdapter
 import dev.ch8n.toiweather.utils.Result
 import dev.ch8n.toiweather.utils.isVisible
 import dev.ch8n.toiweather.utils.startRotation
 import dev.ch8n.toiweather.utils.stopRotation
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.layout_error.*
-import kotlinx.android.synthetic.main.layout_loading.*
-import kotlinx.android.synthetic.main.layout_main_content.*
 import javax.inject.Inject
 
-class MainActivity() : BaseActivity() {
 
-    override val contentView: Int
-        get() = R.layout.activity_main
+class MainActivity() : ViewBindingActivity<ActivityMainBinding>() {
 
-    lateinit var forcastListAdapter: ForcastListAdapter
-    lateinit var bottomSheet: BottomSheetBehavior<CardView>
+    private data class ViewBinds constructor(
+        val parent: ActivityMainBinding,
+        val mainView: LayoutMainContentBinding,
+        val errorView: LayoutErrorBinding,
+        val loadingView: LayoutLoadingBinding
+    )
+
+    override val bindingInflater: (LayoutInflater) -> ActivityMainBinding
+        get() = ActivityMainBinding::inflate
+
+    /**
+     * why not lateinit? checkout from my article :https://chetangupta.net/lateinit-vs-null/
+     * if you prefer youtube video ==> https://www.youtube.com/watch?v=df1g7_Xq6cc
+     * adapter tend to leak and holding view globally isn't a good practice
+     * keeping them nullable to release them later
+     */
+    private var forcastListAdapter: ForcastListAdapter? = null
+    private var bottomSheet: BottomSheetBehavior<CardView>? = null
 
     @Inject
     lateinit var viewModel: MainViewModel
 
     override fun setup() {
+        // bind views
+        val viewBinds = ViewBinds(
+            parent = binding,
+            mainView = LayoutMainContentBinding.bind(binding.layoutMainContent.root),
+            errorView = LayoutErrorBinding.bind(binding.layoutError.root),
+            loadingView = LayoutLoadingBinding.bind(binding.layoutLoading.root),
+        )
 
-        onLoading(true)
-
-        forcast_list.run {
-            adapter = ForcastListAdapter.newInstance().also {
-                forcastListAdapter = it
+        // attach observers
+        viewModel.response.observe(this@MainActivity) { weatherResult ->
+            when (weatherResult) {
+                is Result.Success -> onSuccessWeatherInfo(weatherResult.value, viewBinds)
+                is Result.Error -> onError(true, weatherResult.error, viewBinds)
             }
         }
 
-        bottomSheet = BottomSheetBehavior.from(layout_bottomSheet)
+        with(viewBinds) {
 
-        getWeatherResponse()
+            onLoading(true, this)
 
-        btn_retry.setOnClickListener {
-            onLoading(true)
-            getWeatherResponse()
+            // prepare adapter
+            mainView.forcastList.adapter = ForcastListAdapter.newInstance().also {
+                forcastListAdapter = it
+            }
+
+            bottomSheet = BottomSheetBehavior.from(mainView.layoutBottomSheet)
+
+            // initial api call
+            viewModel.getCurrentWeather("New Delhi")
+
+            // error-retry
+            errorView.btnRetry.setOnClickListener {
+                onLoading(true, this)
+                viewModel.retryWeatherFetch()
+            }
+
         }
 
     }
 
-    fun getWeatherResponse() =
-        viewModel.getCurrentWeather("New Delhi").observe(this, Observer { result ->
-            when (result) {
-                is Result.Success -> onSuccessWeatherInfo(result)
-                is Result.Error -> {
-                    onError(true)
-                    Log.e("response", result.error.localizedMessage)
-                }
-            }
-        })
+    private fun onSuccessWeatherInfo(
+        weather: WeatherResponse,
+        viewBinds: ViewBinds
+    ) = with(viewBinds) {
 
-    fun onSuccessWeatherInfo(result: Result.Success<WeatherResponse>) {
-
-        with(result.value) {
-            val temp = "${current.temparature}${getString(R.string.degree_symbol)}"
-            text_current_temp.text = temp
-            text_current_city.text = location.name
-        }
-
-        // TODO: API doesnt support free weather forcast now : https://weatherstack.com/documentation
-        // document says : Weather ForecastAvailable on: Professional Plan and higher
-        // therefore using dummy data
-        forcastListAdapter.submitList(
+        val temp = "${weather.current?.temperature ?: "NA"}${getString(R.string.degree_symbol)}"
+        mainView.textCurrentTemp.text = temp
+        mainView.textCurrentCity.text = weather.location?.name ?: "NA"
+        forcastListAdapter?.submitList(
             listOf(
-                ForcastItem("Monday", "28 C"),
-                ForcastItem("Tuesday", "28 C"),
-                ForcastItem("Wednesday", "28 C"),
-                ForcastItem("Thursday", "28 C"),
-                ForcastItem("Friday", "28 C"),
-                ForcastItem("Saturday", "28 C"),
-                ForcastItem("Sunday", "28 C")
+                ForcastItem("Weather", weather.current?.weatherDescriptions?.getOrNull(0) ?: "N/A"),
+                ForcastItem("WindSpeed", "${weather.current?.windSpeed ?: "N/A"}"),
+                ForcastItem("Pressure", "${weather.current?.pressure ?: "N/A"}"),
+                ForcastItem("Precip", "${weather.current?.pressure ?: "N/A"}"),
+                ForcastItem("Cloud Cover", "${weather.current?.cloudcover ?: "N/A"}"),
+                ForcastItem("Humidity", "${weather.current?.humidity ?: "N/A"}"),
             )
         )
 
-        Handler().postDelayed({
-            runOnUiThread {
-                bottomSheet.state = BottomSheetBehavior.STATE_EXPANDED
-            }
-        }, 500)
+        // for delayed expansion of bottom sheet for slide-up animation
+        viewModel.postDelayed(500) {
+            bottomSheet?.state = BottomSheetBehavior.STATE_EXPANDED
+        }
 
-        onLoading(false)
-        Log.e("response", result.value.toString())
-
+        onLoading(false, this)
+        Log.e("response", weather.toString())
     }
 
 
-    fun onLoading(isLoading: Boolean) {
-        layout_loading.isVisible(isLoading)
-        layout_error.isVisible(false)
+    private fun onLoading(isLoading: Boolean, viewbinds: ViewBinds) = with(viewbinds) {
+        loadingView.root.isVisible(isLoading)
+        errorView.root.isVisible(false)
         if (isLoading) {
-            image_loading.startRotation()
+            loadingView.imageLoading.startRotation()
         } else {
-            image_loading.stopRotation()
+            loadingView.imageLoading.stopRotation()
         }
     }
 
-    fun onError(isError: Boolean) {
-        layout_error.isVisible(isError)
-        layout_loading.isVisible(false)
+    private fun onError(isError: Boolean, error: Exception, viewBinds: ViewBinds) {
+        viewBinds.errorView.root.isVisible(isError)
+        viewBinds.loadingView.root.isVisible(false)
+        Log.e("response", error.localizedMessage ?: "unkown error")
     }
+
+
 }

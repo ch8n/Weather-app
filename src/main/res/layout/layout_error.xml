@@ -12,7 +12,6 @@
         android:layout_gravity="center"
         android:orientation="vertical">
 
-        <!--suppress AndroidUnknownAttribute -->
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

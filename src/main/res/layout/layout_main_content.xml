@@ -13,7 +13,6 @@
         android:layout_marginBottom="@dimen/mod_7_75"
         android:orientation="vertical">
 
-        <!--suppress AndroidUnknownAttribute -->
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/text_current_temp"
             android:layout_width="match_parent"
@@ -23,7 +22,6 @@
             android:textSize="@dimen/font_main"
             tools:text="20º" />
 
-        <!--suppress AndroidUnknownAttribute -->
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/text_current_city"
             android:layout_width="match_parent"
