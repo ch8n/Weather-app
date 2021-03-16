@@ -10,6 +10,7 @@ import dev.ch8n.toiweather.data.remote.sources.WeatherSource
 import dev.ch8n.toiweather.ui.MainActivity
 import dev.ch8n.toiweather.ui.MainViewModel
 import javax.inject.Inject
+import javax.inject.Singleton
 
 @Module
 object MainDI {
@@ -26,6 +27,7 @@ object MainDI {
 
 }
 
+@Singleton
 class MainViewModelFactory @Inject constructor(
     private val weatherRepo: WeatherRepo
 ) :

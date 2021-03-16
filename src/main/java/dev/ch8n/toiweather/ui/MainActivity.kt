@@ -3,6 +3,7 @@ package dev.ch8n.toiweather.ui
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dev.ch8n.toiweather.R
@@ -40,7 +41,7 @@ class MainActivity() : ViewBindingActivity<ActivityMainBinding>() {
      * keeping them nullable to release them later
      */
     private var forcastListAdapter: ForcastListAdapter? = null
-    private var bottomSheet: BottomSheetBehavior<CardView>? = null
+    private var bottomSheet: BottomSheetBehavior<ViewGroup>? = null
 
     @Inject
     lateinit var viewModel: MainViewModel
@@ -131,5 +132,10 @@ class MainActivity() : ViewBindingActivity<ActivityMainBinding>() {
         Log.e("response", error.localizedMessage ?: "unkown error")
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        forcastListAdapter = null
+        bottomSheet = null
+        // bindings won't leak no need to release
+    }
 }

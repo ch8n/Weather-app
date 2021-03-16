@@ -5,7 +5,7 @@ import retrofit2.Retrofit
 import retrofit2.create
 import javax.inject.Inject
 
-class ApiManager @Inject constructor(private val retrofit: Retrofit) {
+class ApiManager constructor(private val retrofit: Retrofit) {
     val weatherServices: WeatherService by lazy { retrofit.api() }
 }
 

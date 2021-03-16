@@ -1,28 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/default_forcast_list_size"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginStart="@dimen/mod_2"
-    android:layout_marginEnd="@dimen/mod_2"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:elevation="@dimen/default_elevation">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_attr"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        tools:text="Windspeed"
-        android:textColor="@color/colorTextSecondary"
-        android:textSize="@dimen/font_body" />
+        android:padding="@dimen/mod_2">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_attr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorTextSecondary"
+            android:textSize="@dimen/font_body"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Windspeed" />
 
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|end"
-        tools:text="1000"
-        android:textColor="@color/colorTextSecondary"
-        android:textSize="@dimen/font_body" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorTextSecondary"
+            android:textSize="@dimen/font_body"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1000" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="#c2c2c2"
+        android:layout_gravity="bottom" />
+
 </FrameLayout>

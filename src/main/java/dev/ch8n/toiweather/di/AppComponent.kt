@@ -6,6 +6,7 @@ import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import dev.ch8n.toiweather.TOIApp
 import dev.ch8n.toiweather.di.modules.ActivityBinder
+import dev.ch8n.toiweather.di.modules.DataSourceBinder
 import dev.ch8n.toiweather.di.modules.NetworkBinder
 import javax.inject.Singleton
 
@@ -15,7 +16,8 @@ import javax.inject.Singleton
     modules = [
         AndroidSupportInjectionModule::class,
         NetworkBinder::class,
-        ActivityBinder::class
+        ActivityBinder::class,
+        DataSourceBinder::class
     ]
 )
 interface AppComponent : AndroidInjector<TOIApp> {

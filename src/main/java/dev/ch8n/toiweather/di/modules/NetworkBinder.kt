@@ -14,6 +14,7 @@ import javax.inject.Singleton
 @Module
 object NetworkBinder {
 
+    @Singleton
     @Provides
     fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
         .connectTimeout(NETWORK_TIMEOUT, TimeUnit.SECONDS)

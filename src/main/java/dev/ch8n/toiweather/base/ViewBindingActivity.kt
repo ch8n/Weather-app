@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import dagger.android.support.DaggerAppCompatActivity
 
-// checkout my official blog where I implemented this
+// checkout my official blog where I explained this pattern in detail
 // https://chetangupta.net/viewbinding/
-abstract class ViewBindingActivity<VB : ViewBinding> : AppCompatActivity() {
+abstract class ViewBindingActivity<VB : ViewBinding> : DaggerAppCompatActivity() {
 
     private var _binding: ViewBinding? = null
     abstract val bindingInflater: (LayoutInflater) -> VB
@@ -30,18 +30,4 @@ abstract class ViewBindingActivity<VB : ViewBinding> : AppCompatActivity() {
         super.onDestroy()
         _binding = null
     }
-}
-
-abstract class BaseActivity : DaggerAppCompatActivity() {
-
-    abstract val contentView: Int
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(contentView)
-        setup()
-    }
-
-    abstract fun setup()
-
 }
