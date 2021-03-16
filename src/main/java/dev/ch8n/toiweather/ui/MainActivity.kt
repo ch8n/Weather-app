@@ -60,12 +60,11 @@ class MainActivity() : ViewBindingActivity<ActivityMainBinding>() {
             when (weatherResult) {
                 is Result.Success -> onSuccessWeatherInfo(weatherResult.value, viewBinds)
                 is Result.Error -> onError(true, weatherResult.error, viewBinds)
+                is Result.Loading -> onLoading(true, viewBinds)
             }
         }
 
         with(viewBinds) {
-
-            onLoading(true, this)
 
             // prepare adapter
             mainView.forcastList.adapter = ForcastListAdapter.newInstance().also {
@@ -80,7 +79,6 @@ class MainActivity() : ViewBindingActivity<ActivityMainBinding>() {
 
             // error-retry
             errorView.btnRetry.setOnClickListener {
-                onLoading(true, this)
                 viewModel.retryWeatherFetch()
             }
 

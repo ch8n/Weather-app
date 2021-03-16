@@ -11,14 +11,19 @@ import dev.ch8n.toiweather.utils.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.jetbrains.annotations.TestOnly
 
 class MainViewModel(private val weatherRepo: WeatherRepo) : ViewModel() {
 
-    private val _result = MutableLiveData<Result<WeatherResponse, Exception>>()
+    private val _result = MutableLiveData<Result<WeatherResponse, Exception>>(Result.Loading)
     val response = _result as LiveData<Result<WeatherResponse, Exception>>
     private var lastWeatherLocation = ""
 
+    @TestOnly
+    fun getResultTestOnly() = _result
+
     fun retryWeatherFetch() {
+        _result.value = Result.Loading
         getCurrentWeather(lastWeatherLocation)
     }
 

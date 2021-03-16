@@ -61,6 +61,9 @@ class MainActivityTest {
         scenario.moveToState(Lifecycle.State.RESUMED)
         scenario.onActivity { view ->
             val spyView = spyk<MainActivity>(view)
+            val result = Result.build { throw Exception("pokemon") }
+            spyView.viewModel.getResultTestOnly().value = result
+
             Espresso.onView(ViewMatchers.withId(R.id.image_loading))
                 .check { view, noViewFoundException ->
                     Truth.assertThat(view.visibility == View.VISIBLE).isTrue()
@@ -73,6 +76,8 @@ class MainActivityTest {
         scenario.moveToState(Lifecycle.State.RESUMED)
         scenario.onActivity { view ->
             val spyView = spyk<MainActivity>(view)
+            val result = Result.build { throw Exception("pokemon") }
+            spyView.viewModel.getResultTestOnly().value = result
             Espresso.onView(ViewMatchers.withId(R.id.btn_retry))
                 .check { view, noViewFoundException ->
                     Truth.assertThat(view.visibility == View.VISIBLE).isTrue()
@@ -87,6 +92,9 @@ class MainActivityTest {
             val spyView = spyk<MainActivity>(view)
             Espresso.onView(ViewMatchers.withId(R.id.btn_retry))
                 .check { view1, _ ->
+                    val spyView = spyk<MainActivity>(view)
+                    val result = Result.build { throw Exception("pokemon") }
+                    spyView.viewModel.getResultTestOnly().value = result
 
                     Truth.assertThat(view1.visibility == View.VISIBLE).isTrue()
 
@@ -108,6 +116,7 @@ class MainActivityTest {
         scenario.onActivity { view ->
             val spyView = spyk<MainActivity>(view)
             val result = Result.build { WeatherResponse.fake() }
+            spyView.viewModel.getResultTestOnly().value = result
             Espresso.onView(ViewMatchers.withId(R.id.text_current_temp))
                 .check { view2, _ ->
                     Truth.assertThat((view2 as AppCompatTextView).text.toString()).contains("10")
