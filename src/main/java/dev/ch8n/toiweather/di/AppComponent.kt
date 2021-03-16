@@ -12,11 +12,11 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-    modules = arrayOf(
+    modules = [
         AndroidSupportInjectionModule::class,
         NetworkBinder::class,
         ActivityBinder::class
-    )
+    ]
 )
 interface AppComponent : AndroidInjector<TOIApp> {
 

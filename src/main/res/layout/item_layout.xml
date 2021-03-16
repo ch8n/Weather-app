@@ -2,26 +2,27 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/default_forcast_list_size"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginStart="@dimen/mod_2"
     android:layout_marginEnd="@dimen/mod_2"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_day"
+        android:id="@+id/text_attr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:text="Monday"
+        tools:text="Windspeed"
         android:textColor="@color/colorTextSecondary"
         android:textSize="@dimen/font_body" />
 
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_temp"
+        android:id="@+id/text_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
-        android:text="24 C"
+        tools:text="1000"
         android:textColor="@color/colorTextSecondary"
         android:textSize="@dimen/font_body" />
 </FrameLayout>

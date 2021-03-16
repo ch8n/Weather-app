@@ -1,20 +1,18 @@
 package dev.ch8n.toiweather.ui.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import dev.ch8n.toiweather.R
-import kotlinx.android.synthetic.main.item_layout.view.*
+import dev.ch8n.toiweather.databinding.ItemLayoutBinding
 
-class ForcastListAdapter private constructor(diffUtil: DiffUtil.ItemCallback<ForcastItem>) :
-    ListAdapter<ForcastItem, ForcastViewHolder>(diffUtil) {
+class ForcastListAdapter private constructor(
+    diffUtil: DiffUtil.ItemCallback<ForcastItem>
+) : ListAdapter<ForcastItem, ForcastViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ForcastViewHolder {
-        val holderView =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
+        val holderView = ItemLayoutBinding.inflate(LayoutInflater.from(parent.context))
         return ForcastViewHolder(holderView)
     }
 
@@ -27,11 +25,11 @@ class ForcastListAdapter private constructor(diffUtil: DiffUtil.ItemCallback<For
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ForcastItem>() {
 
             override fun areItemsTheSame(oldItem: ForcastItem, newItem: ForcastItem): Boolean =
-                oldItem.day == newItem.day
+                oldItem.attribute == newItem.attribute
 
             override fun areContentsTheSame(oldItem: ForcastItem, newItem: ForcastItem): Boolean {
-                return (oldItem.day == newItem.day &&
-                        oldItem.temp == newItem.temp)
+                return (oldItem.attribute == newItem.attribute &&
+                        oldItem.value == newItem.value)
             }
         }
 
@@ -41,16 +39,17 @@ class ForcastListAdapter private constructor(diffUtil: DiffUtil.ItemCallback<For
 }
 
 
-class ForcastViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    val textDay = view.text_day
-    val textTemp = view.text_temp
+class ForcastViewHolder(binding: ItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+
+    private val textAttribute = binding.textAttr
+    private val textValue = binding.textValue
 
     fun onBind(item: ForcastItem) {
-        textDay.text = item.day
-        textTemp.text = item.temp
+        textAttribute.text = item.attribute
+        textValue.text = item.value
     }
 
 }
 
 
-data class ForcastItem(val day: String, val temp: String)
+data class ForcastItem(val attribute: String, val value: String)

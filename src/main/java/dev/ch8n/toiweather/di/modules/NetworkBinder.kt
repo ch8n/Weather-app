@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
-class NetworkBinder {
+object NetworkBinder {
 
     @Provides
     fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
@@ -33,6 +33,5 @@ class NetworkBinder {
     @Provides
     @Singleton
     fun provideApiManager(retrofit: Retrofit): ApiManager = ApiManager(retrofit)
-
 
 }
