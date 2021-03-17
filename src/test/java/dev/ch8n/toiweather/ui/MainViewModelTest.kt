@@ -1,21 +1,17 @@
 package dev.ch8n.toiweather.ui
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.distinctUntilChanged
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth
-import com.jraska.livedata.test
 import dev.ch8n.toiweather.data.remote.model.WeatherResponse
 import dev.ch8n.toiweather.data.remote.repos.WeatherRepo
 import dev.ch8n.toiweather.utils.Result
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentCaptor
 
 /**
  * JVM instrumentation testing without using device
@@ -60,6 +56,10 @@ class MainViewModelTest {
 
 }
 
+
+/**
+ * Author : chetan
+ */
 inline fun <T> LiveData<T>.awaitSecondResult(crossinline action: (value: T) -> Unit) {
     val slots = mutableListOf<T>()
     observeForever {
