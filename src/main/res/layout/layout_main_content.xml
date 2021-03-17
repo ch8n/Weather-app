@@ -34,7 +34,7 @@
             android:includeFontPadding="false"
             android:textColor="@color/colorCustomBlue"
             android:textSize="@dimen/font_subline"
-            tools:text="Bangalore" />
+            tools:text="India" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -54,9 +54,6 @@
             android:layout_height="wrap_content"
             app:behavior_hideable="false"
             app:behavior_peekHeight="@dimen/default_forcast_list_peek"
-            app:cardBackgroundColor="@color/colorBackgroundMain"
-            app:cardElevation="@dimen/default_elevation"
-            app:cardCornerRadius="@dimen/cardview_default_radius"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
 
@@ -64,7 +61,7 @@
                 android:id="@+id/forcast_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 tools:listitem="@layout/item_layout" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
