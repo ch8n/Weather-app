@@ -8,6 +8,11 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 
+
+/**
+ * Instrumented real api testing useful for quick
+ * api response checking
+ */
 @LargeTest
 class WeatherAPISourceTest {
 

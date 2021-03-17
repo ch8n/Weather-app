@@ -1,6 +1,7 @@
 package dev.ch8n.toiweather.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.distinctUntilChanged
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth
@@ -16,11 +17,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 
+/**
+ * JVM instrumentation testing without using device
+ * for view-model
+ */
 @RunWith(AndroidJUnit4::class)
 class MainViewModelTest {
-
-    @Rule
-    val instantExecutorRule = InstantTaskExecutorRule()
 
     lateinit var weatherRepo: WeatherRepo
     lateinit var mainViewModel: MainViewModel
@@ -34,19 +36,15 @@ class MainViewModelTest {
     @Test
     fun `when weather response success`() = runBlocking {
         coEvery { weatherRepo.getRemoteCurrentWeather(any()) } returns WeatherResponse.fake()
-        mainViewModel.response
-            .test()
-            .awaitValue()
-            .assertValue { result: Result<WeatherResponse, Exception>? ->
-                val current = (result as Result.Success).value.current
-                current?.cloudcover == 10 &&
-                        current.precip == 10 &&
-                        current.pressure == 10 &&
-                        current.temperature == 10 &&
-                        current.windSpeed == 10 &&
-                        current.weatherDescriptions?.get(0) == "rain"
-            }
-
+        mainViewModel.response.awaitSecondResult {
+            val current = (it as Result.Success).value.current
+            Truth.assertThat(current?.cloudcover).isEqualTo(10)
+            Truth.assertThat(current?.precip).isEqualTo(10)
+            Truth.assertThat(current?.pressure).isEqualTo(10)
+            Truth.assertThat(current?.temperature).isEqualTo(10)
+            Truth.assertThat(current?.windSpeed).isEqualTo(10)
+            Truth.assertThat(current?.weatherDescriptions?.get(0)).isEqualTo("rain")
+        }
         mainViewModel.getCurrentWeather("delhi")
     }
 
@@ -54,18 +52,21 @@ class MainViewModelTest {
     @Test
     fun `when weather response fails`() = runBlocking {
         coEvery { weatherRepo.getRemoteCurrentWeather(any()) } throws Exception("pokemon")
-
-        val slots = mutableListOf<Result<WeatherResponse, Exception>>()
-        mainViewModel.response.observeForever {
-            slots.add(it)
-            if (slots.size == 2) {
-                val result = slots.get(1)
-                Truth.assertThat(result is Result.Error).isTrue()
-            }
+        mainViewModel.response.awaitSecondResult {
+            Truth.assertThat(it is Result.Error).isTrue()
         }
         mainViewModel.getCurrentWeather("delhi")
-
-
     }
 
+}
+
+inline fun <T> LiveData<T>.awaitSecondResult(crossinline action: (value: T) -> Unit) {
+    val slots = mutableListOf<T>()
+    observeForever {
+        slots.add(it)
+        if (slots.size == 2) {
+            val result = slots.get(1)
+            action(result)
+        }
+    }
 }

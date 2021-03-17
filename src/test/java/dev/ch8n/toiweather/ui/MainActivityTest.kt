@@ -21,13 +21,13 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 
-
+/**
+ * JVM instrumentation testing without using device
+ */
 @RunWith(AndroidJUnit4::class)
 @MediumTest
 @Config(application = TOIApp::class)
 class MainActivityTest {
-
-    private lateinit var weatherSource: WeatherSource
 
     lateinit var scenario: ActivityScenario<MainActivity>
 

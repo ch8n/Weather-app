@@ -1,25 +1,15 @@
 package dev.ch8n.toiweather.data.remote.repos
 
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.MediumTest
 import com.google.common.truth.Truth
 import dev.ch8n.toiweather.data.remote.model.WeatherResponse
 import dev.ch8n.toiweather.data.remote.sources.WeatherSource
 import dev.ch8n.toiweather.utils.Result
-import io.mockk.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import io.mockk.coEvery
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import org.junit.Before
 import org.junit.Test
 
-import org.junit.Assert.*
-import org.junit.Before
-import org.junit.Rule
-import org.junit.runner.RunWith
-
-
-@ExperimentalCoroutinesApi
-@RunWith(AndroidJUnit4::class)
-@MediumTest
 class WeatherRepositoryTest {
 
 
@@ -45,7 +35,6 @@ class WeatherRepositoryTest {
         Truth.assertThat(response.current?.pressure).isEqualTo(10)
         Truth.assertThat(response.current?.temperature).isEqualTo(10)
         Truth.assertThat(response.current?.windSpeed).isEqualTo(10)
-        Truth.assertThat(response.current?.weatherDescriptions).isEqualTo(10)
         Truth.assertThat(response.current?.weatherDescriptions?.get(0) == "rain").isTrue()
         Truth.assertThat(response.location?.name).isEqualTo("delhi")
     }
