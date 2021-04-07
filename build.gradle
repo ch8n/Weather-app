@@ -5,13 +5,13 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "dev.ch8n.toiweather"
-        minSdkVersion 16
+        applicationId "dev.ch8n.weather"
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "BASE_URL", "\"api.weatherstack.com\"")
+        buildConfigField("String", "BASE_URL", "\"www.mocky.io\"")
         buildConfigField("String", "PROTOCOL_HTTP", "\"http://\"")
         buildConfigField("String", "KEY_WEATHER_API", "\"a1ebe5d504b1620b4cf529ab4aa61ec2\"")
     }

@@ -1,47 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:elevation="@dimen/default_elevation">
+    app:cardBackgroundColor="@color/colorWhite"
+    app:cardElevation="@dimen/mod_10">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
         android:padding="@dimen/mod_2">
 
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_temp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorCustomBlack"
+                android:textSize="32sp"
+                tools:text="25*C" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorCustomBlack"
+                android:textSize="16sp"
+                tools:text="TIME VALUE" />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_attr"
+            android:id="@+id/text_rain"
+            android:layout_width="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginStart="@dimen/mod_3"
+            android:layout_marginEnd="@dimen/mod_3"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_rain"
+            android:textColor="@color/colorCustomBlack"
+            tools:text="25*C" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_wind"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorTextSecondary"
-            android:textSize="@dimen/font_body"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Windspeed" />
+            android:layout_marginStart="@dimen/mod_3"
+            android:layout_marginEnd="@dimen/mod_3"
+            android:drawableStart="@drawable/ic_wind"
+            android:textColor="@color/colorCustomBlack"
+            android:textSize="16sp"
+            tools:text="25*C" />
 
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorTextSecondary"
-            android:textSize="@dimen/font_body"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="1000" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="2px"
-        android:background="#c2c2c2"
-        android:layout_gravity="bottom" />
+        android:layout_gravity="bottom"
+        android:background="#c2c2c2" />
 
-</FrameLayout>
+</androidx.cardview.widget.CardView>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dev.ch8n.toiweather">
+    package="dev.ch8n.weather">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".TOIApp"
+        android:name=".WeatherApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
